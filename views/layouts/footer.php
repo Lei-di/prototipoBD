@@ -1,7 +1,7 @@
 </main>
     <hr>
     <footer>
-        <p>Protótipo de Banco de Dados - 2025</p>
+        <p>Banco de Dados Empresa de Segurança</p>
     </footer>
 </body>
 </html>
