@@ -27,7 +27,8 @@ class OcorrenciaController {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $descricao = $_POST['descricao'];
             $camera_id = $_POST['camera_id'];
-            $operador_id = 1; // Temporário, até ter login
+            // $operador_id = 1; // Temporário, até ter login (LINHA ANTIGA)
+            $operador_id = $_SESSION['usuario_id']; // Pega o ID do usuário logado!
 
             $resultado = $this->ocorrenciaModel->registrarOcorrencia($operador_id, $descricao, $camera_id);
 

@@ -30,7 +30,8 @@ class EstoqueController {
             $item_id = $_POST['item_id'];
             $tipo = $_POST['tipo'];
             $quantidade = $_POST['quantidade'];
-            $usuario_id = 1; // Temporário, até você ter o login real
+            // $usuario_id = 1; // Temporário, até você ter o login real (LINHA ANTIGA)
+            $usuario_id = $_SESSION['usuario_id']; // Pega o ID do usuário logado!
 
             // 2. Validação simples
             if (empty($item_id) || empty($tipo) || empty($quantidade)) {
