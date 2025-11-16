@@ -8,9 +8,9 @@ function getDbConnection() {
     $user = 'postgres';       // Seu usuário do pgAdmin
     $pass = '1234';   // Sua senha
 
-    $conn_string = "host=$host port=$port dbname=$dbname user=$user password=$pass";
+    $conn_string = "host=localhost port=5432 user=postgres password=1234";
     
-    $db_conn = pg_connect($conn_string);
+    $db_conn = pg_connect("host=localhost port=5432 user=postgres password=1234");
 
     if (!$db_conn) {
         die("Erro ao conectar ao banco de dados.");
