@@ -7,7 +7,8 @@ session_start(); // DEVE SER A PRIMEIRA LINHA!
 $action = $_GET['action'] ?? 'home';
 
 // 2. Define quais ações são "públicas" (não precisam de login)
-$acoes_publicas = ['loginForm', 'fazerLogin'];
+// CORREÇÃO: Removemos o acesso público ao registro de usuário
+$acoes_publicas = ['loginForm', 'fazerLogin']; // <-- VOLTAR PARA ISTO
 
 // 3. Verifica se o usuário NÃO está logado E se a ação NÃO é pública
 if (!isset($_SESSION['usuario_id']) && !in_array($action, $acoes_publicas)) {
@@ -15,7 +16,7 @@ if (!isset($_SESSION['usuario_id']) && !in_array($action, $acoes_publicas)) {
     header("Location: index.php?action=loginForm");
     exit;
 }
-// --- FIM DO GUARDIÃO DE ACESSO ---
+
 
 
 // 1. Inclui os arquivos necessários

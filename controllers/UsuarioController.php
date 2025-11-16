@@ -14,17 +14,23 @@ class UsuarioController {
     }
 
     /* ========================================
-     * NOVOS MÉTODOS DE AUTENTICAÇÃO
+     * MÉTODOS DE AUTENTICAÇÃO (LOGIN/LOGOUT)
      * ======================================== */
 
-    // Ação: index.php?action=loginForm
+    /**
+     * Ação: index.php?action=loginForm
+     * Mostra o formulário de login.
+     */
     public function mostrarFormularioLogin() {
         require 'views/layouts/header.php';
         require 'views/login_formulario.php';
         require 'views/layouts/footer.php';
     }
 
-    // Ação: index.php?action=fazerLogin
+    /**
+     * Ação: index.php?action=fazerLogin
+     * Processa a tentativa de login.
+     */
     public function fazerLogin() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $login = $_POST['login'];
@@ -53,7 +59,10 @@ class UsuarioController {
         }
     }
 
-    // Ação: index.php?action=logout
+    /**
+     * Ação: index.php?action=logout
+     * Destrói a sessão e faz logout.
+     */
     public function fazerLogout() {
         session_unset();
         session_destroy();
@@ -62,18 +71,42 @@ class UsuarioController {
     }
     
     /* ========================================
-     * MÉTODOS ANTIGOS (EXISTENTES)
+     * MÉTODOS DE GERENCIAMENTO (PROTEGIDOS)
      * ======================================== */
 
-    // Ação: index.php?action=usuarioForm
+    /**
+     * Ação: index.php?action=usuarioForm
+     * Mostra o formulário para cadastrar novos usuários.
+     * Apenas Administradores (perfil_id = 1) podem acessar.
+     */
     public function mostrarFormulario() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        // Apenas o perfil 1 (Admin) pode ver esta página
+        if ($_SESSION['perfil_id'] != 1) {
+            die("Acesso negado. Apenas administradores podem cadastrar usuários.");
+            // O ideal é redirecionar para a home com uma mensagem de erro
+            // header("Location: index.php?action=home&erro=acesso_negado");
+        }
+        // --- FIM DO GUARDIÃO ---
+        
         require 'views/layouts/header.php';
         require 'views/usuario_formulario.php';
         require 'views/layouts/footer.php';
     }
 
-    // Ação: index.php?action=registrarUsuario
+    /**
+     * Ação: index.php?action=registrarUsuario
+     * Processa o cadastro de um novo usuário.
+     * Apenas Administradores (perfil_id = 1) podem executar esta ação.
+     */
     public function registrarUsuario() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        // Apenas o perfil 1 (Admin) pode executar esta ação
+        if ($_SESSION['perfil_id'] != 1) {
+            die("Acesso negado. Apenas administradores podem cadastrar usuários.");
+        }
+        // --- FIM DO GUARDIÃO ---
+
         $mensagem = ""; 
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
