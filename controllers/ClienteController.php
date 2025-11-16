@@ -15,6 +15,14 @@ class ClienteController {
 
     // Ação: index.php?action=clienteForm
     public function mostrarFormulario() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM
+        if ($perfil == 3 || $perfil == 4) {
+            die("Acesso negado. Você não tem permissão para cadastrar clientes.");
+        }
+        // --- FIM DO GUARDIÃO ---
+        
         // Apenas carrega a View do formulário
         require 'views/layouts/header.php';
         require 'views/cliente_formulario.php';
@@ -23,6 +31,14 @@ class ClienteController {
 
     // Ação: index.php?action=registrarCliente
     public function registrarCliente() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM
+        if ($perfil == 3 || $perfil == 4) {
+            die("Acesso negado. Você não tem permissão para cadastrar clientes.");
+        }
+        // --- FIM DO GUARDIÃO ---
+        
         $mensagem = ""; 
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -1,3 +1,6 @@
+<?php
+// views/layouts/header.php
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,14 +18,37 @@
 </head>
 <body>
 
-    <?php if (isset($_SESSION['usuario_id'])): ?>
+    <?php if (isset($_SESSION['usuario_id'])): 
+        // Armazena o perfil_id para facilitar a leitura
+        $perfil = $_SESSION['perfil_id'];
+    ?>
         <nav>
             <a href="index.php?action=home">Início</a> | 
-            <a href="index.php?action=relatorioEstoque">Relatório de Reposição</a> | 
-            <a href="index.php?action=movimentarEstoqueForm">Movimentar Estoque</a> |
-            <a href="index.php?action=clienteForm">Cadastrar Cliente</a> |
-            <a href="index.php?action=usuarioForm">Cadastrar Usuário</a> |
-            <a href="index.php?action=ocorrenciaForm">Registrar Ocorrência</a>
+            
+            <?php // Perfil 5 (Atendente) NÃO PODE ver relatórios
+            if ($perfil != 5): ?>
+                <a href="index.php?action=relatorioEstoque">Relatório de Reposição</a> | 
+            <?php endif; ?>
+
+            <?php // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM movimentar
+            if ($perfil != 3 && $perfil != 5): ?>
+                <a href="index.php?action=movimentarEstoqueForm">Movimentar Estoque</a> |
+            <?php endif; ?>
+
+            <?php // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM cadastrar cliente
+            if ($perfil != 3 && $perfil != 4): ?>
+                <a href="index.php?action=clienteForm">Cadastrar Cliente</a> |
+            <?php endif; ?>
+
+            <?php // Apenas Perfil 1 (Admin) PODE cadastrar usuário
+            if ($perfil == 1): ?>
+                <a href="index.php?action=usuarioForm">Cadastrar Usuário</a> |
+            <?php endif; ?>
+
+            <?php // Perfil 4 (Controlador) NÃO PODE registrar ocorrência
+            if ($perfil != 4): ?>
+                <a href="index.php?action=ocorrenciaForm">Registrar Ocorrência</a>
+            <?php endif; ?>
             
             <span style="float: right; padding-right: 10px;">
                 Olá, <?php echo htmlspecialchars($_SESSION['usuario_nome']); ?> |

@@ -15,6 +15,14 @@ class OcorrenciaController {
 
     // Ação: index.php?action=ocorrenciaForm
     public function mostrarFormulario() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 4 (Controlador) NÃO PODE
+        if ($perfil == 4) {
+            die("Acesso negado. Você não tem permissão para registrar ocorrências.");
+        }
+        // --- FIM DO GUARDIÃO ---
+        
         require 'views/layouts/header.php';
         require 'views/ocorrencia_formulario.php';
         require 'views/layouts/footer.php';
@@ -22,6 +30,14 @@ class OcorrenciaController {
 
     // Ação: index.php?action=registrarOcorrencia
     public function registrarOcorrencia() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 4 (Controlador) NÃO PODE
+        if ($perfil == 4) {
+            die("Acesso negado. Você não tem permissão para registrar ocorrências.");
+        }
+        // --- FIM DO GUARDIÃO ---
+        
         $mensagem = ""; 
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

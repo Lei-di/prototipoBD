@@ -15,6 +15,14 @@ class EstoqueController {
 
     // Ação: index.php?action=movimentarEstoqueForm
     public function mostrarFormularioMovimentacao() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM
+        if ($perfil == 3 || $perfil == 5) {
+            die("Acesso negado. Você não tem permissão para movimentar o estoque.");
+        }
+        // --- FIM DO GUARDIÃO ---
+        
         // Simplesmente carrega a View do formulário
         require 'views/layouts/header.php';
         require 'views/estoque_formulario.php';
@@ -23,6 +31,14 @@ class EstoqueController {
 
     // Ação: index.php?action=registrarMovimentacao (quando o formulário é enviado)
     public function registrarMovimentacao() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM
+        if ($perfil == 3 || $perfil == 5) {
+            die("Acesso negado. Você não tem permissão para registrar movimentações de estoque.");
+        }
+        // --- FIM DO GUARDIÃO ---
+
         $mensagem = ""; // Mensagem de sucesso ou erro
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -58,6 +74,14 @@ class EstoqueController {
 
     // Ação: index.php?action=relatorioEstoque
     public function gerarRelatorio() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 5 (Atendente) NÃO PODE
+        if ($perfil == 5) {
+            die("Acesso negado. Você não tem permissão para ver relatórios de estoque.");
+        }
+        // --- FIM DO GUARDIÃO ---
+
         // 1. Chama o Model
         $itens = $this->estoqueModel->getRelatorioReposicao();
         
