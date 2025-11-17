@@ -20,9 +20,16 @@ if (isset($mensagem)) {
         <label>Senha:</label>
         <input type="password" name="senha" required>
     </p>
+    
     <p>
-        <label>ID do Perfil:</label>
-        <input type="number" name="perfil_id" value="1" required> 
-        </p>
+        <label>Perfil do Usuário:</label>
+        <select name="perfil_id" required>
+            <option value="1">1 - Administrador</option>
+            <option value="2">2 - Supervisor de Segurança</option>
+            <option value="3">3 - Operador de Monitoramento</option>
+            <option value="4">4 - Controlador de Estoque</option>
+            <option value="5">5 - Atendente</option>
+        </select>
+    </p>
     <button type="submit">Cadastrar Usuário</button>
 </form>
