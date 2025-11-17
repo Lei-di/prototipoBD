@@ -71,6 +71,12 @@ switch ($action) {
         $controller = new ClienteController($db_conn);
         $controller->registrarCliente();
         break;
+    // --- ROTA ADICIONADA ---
+    case 'listarClientes':
+        $controller = new ClienteController($db_conn);
+        $controller->listarClientes();
+        break;
+    // --- FIM DA ADIÇÃO ---
 
     // Rotas de Usuário
     case 'usuarioForm':

@@ -69,5 +69,28 @@ class ClienteController {
         require 'views/cliente_formulario.php'; 
         require 'views/layouts/footer.php';
     }
+
+    /**
+     * NOVO MÉTODO
+     * Ação: index.php?action=listarClientes
+     * Mostra a lista de clientes cadastrados.
+     */
+    public function listarClientes() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM (MESMA REGRA DO CADASTRO)
+        if ($perfil == 3 || $perfil == 4) {
+            die("Acesso negado. Você não tem permissão para visualizar clientes.");
+        }
+        // --- FIM DO GUARDIÃO ---
+
+        // 1. Chama o Model para buscar os dados
+        $clientes = $this->clienteModel->listarClientes();
+        
+        // 2. Carrega a View e passa os dados
+        require 'views/layouts/header.php';
+        require 'views/cliente_lista.php'; // A View usará a variável $clientes
+        require 'views/layouts/footer.php';
+    }
 }
 ?>

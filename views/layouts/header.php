@@ -35,9 +35,10 @@
                 <a href="index.php?action=movimentarEstoqueForm">Movimentar Estoque</a> |
             <?php endif; ?>
 
-            <?php // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM cadastrar cliente
+            <?php // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM
             if ($perfil != 3 && $perfil != 4): ?>
                 <a href="index.php?action=clienteForm">Cadastrar Cliente</a> |
+                <a href="index.php?action=listarClientes">Visualizar Clientes</a> |
             <?php endif; ?>
 
             <?php // Apenas Perfil 1 (Admin) PODE cadastrar usuário
