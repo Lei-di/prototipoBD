@@ -10,15 +10,12 @@
         /* CSS Básico para organizar */
         body { font-family: sans-serif; margin: 0; }
         
-        /* --- MUDANÇA AQUI --- */
-        /* Voltamos o NAV a ser um container simples para os links */
         nav { 
             background: #333; 
             color: white; 
             padding: 10px; 
-            flex-wrap: wrap; /* Permite quebrar a linha em telas MUITO pequenas */
+            flex-wrap: wrap; 
         }
-        /* --- FIM DA MUDANÇA --- */
 
         nav a { color: white; text-decoration: none; padding: 0 10px; }
         nav a:hover { background: #555; }
@@ -53,9 +50,10 @@
                     <a href="index.php?action=listarClientes">Visualizar Clientes</a> |
                 <?php endif; ?>
 
-                <?php // Apenas Perfil 1 (Admin) PODE cadastrar usuário
+                <?php // Apenas Perfil 1 (Admin) PODE
                 if ($perfil == 1): ?>
                     <a href="index.php?action=usuarioForm">Cadastrar Usuário</a> |
+                    <a href="index.php?action=listarUsuarios">Visualizar Usuários</a> |
                 <?php endif; ?>
 
                 <?php // Perfil 4 (Controlador) NÃO PODE registrar ocorrência

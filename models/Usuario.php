@@ -7,7 +7,7 @@ class Usuario {
 
     public function __construct($db) {
         $this->db_conn = $db;
-    } // <- O erro provavelmente foi aqui, na falta desta chave
+    } 
 
     /**
      * Chama a função sp_CadastrarUsuario
@@ -71,6 +71,44 @@ class Usuario {
         
         // Se não encontrou ou a senha estava errada
         return false;
+    }
+    
+    /**
+     * NOVO MÉTODO
+     * Busca todos os usuários e seus perfis
+     */
+    public function listarUsuarios() {
+        
+        // Vamos buscar o ID e o NOME do perfil que vêm da tabela Perfis
+        // Assumindo que a tabela de perfis se chama 'Perfis' e tem colunas 'id' e 'nome_perfil'
+        // Se o nome da tabela ou coluna for diferente, ajuste o JOIN.
+        
+        // --- ATUALIZAÇÃO ---
+        // Para simplificar e evitar adivinhar o nome da sua tabela de Perfis,
+        // vamos apenas buscar os dados da tabela Usuarios.
+        // A View (PHP) fará a tradução do 'perfil_id' para o nome.
+        
+        $sql = "
+            SELECT 
+                id, 
+                nome, 
+                login, 
+                perfil_id, 
+                ativo 
+            FROM 
+                Usuarios 
+            ORDER BY 
+                nome ASC;
+        ";
+        
+        $result = pg_query($this->db_conn, $sql);
+        
+        if (!$result) {
+            echo "Erro na consulta de usuários: " . pg_last_error($this->db_conn);
+            return [];
+        }
+
+        return pg_fetch_all($result);
     }
 }
 ?>

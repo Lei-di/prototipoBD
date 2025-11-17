@@ -84,8 +84,6 @@ class UsuarioController {
         // Apenas o perfil 1 (Admin) pode ver esta página
         if ($_SESSION['perfil_id'] != 1) {
             die("Acesso negado. Apenas administradores podem cadastrar usuários.");
-            // O ideal é redirecionar para a home com uma mensagem de erro
-            // header("Location: index.php?action=home&erro=acesso_negado");
         }
         // --- FIM DO GUARDIÃO ---
         
@@ -127,6 +125,29 @@ class UsuarioController {
         
         require 'views/layouts/header.php';
         require 'views/usuario_formulario.php'; 
+        require 'views/layouts/footer.php';
+    }
+
+    /**
+     * NOVO MÉTODO
+     * Ação: index.php?action=listarUsuarios
+     * Mostra a lista de todos os usuários cadastrados.
+     * Apenas Administradores (perfil_id = 1) podem acessar.
+     */
+    public function listarUsuarios() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        // Apenas o perfil 1 (Admin) pode ver esta página
+        if ($_SESSION['perfil_id'] != 1) {
+            die("Acesso negado. Apenas administradores podem visualizar usuários.");
+        }
+        // --- FIM DO GUARDIÃO ---
+
+        // 1. Chama o Model
+        $usuarios = $this->usuarioModel->listarUsuarios();
+        
+        // 2. Carrega a View e passa os dados
+        require 'views/layouts/header.php';
+        require 'views/usuario_lista.php'; // A View usará a variável $usuarios
         require 'views/layouts/footer.php';
     }
 }

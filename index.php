@@ -61,12 +61,10 @@ switch ($action) {
         $controller = new EstoqueController($db_conn);
         $controller->gerarRelatorio();
         break;
-    // --- ROTA ADICIONADA ---
     case 'historicoEstoque':
         $controller = new EstoqueController($db_conn);
         $controller->mostrarHistorico();
         break;
-    // --- FIM DA ADIÇÃO ---
     
     // Rotas de Cliente
     case 'clienteForm':
@@ -91,6 +89,13 @@ switch ($action) {
         $controller = new UsuarioController($db_conn);
         $controller->registrarUsuario();
         break;
+    
+    // --- ROTA ADICIONADA ---
+    case 'listarUsuarios':
+        $controller = new UsuarioController($db_conn);
+        $controller->listarUsuarios();
+        break;
+    // --- FIM DA ADIÇÃO ---
 
     // Rotas de Ocorrência
     case 'ocorrenciaForm':
