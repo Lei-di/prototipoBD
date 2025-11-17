@@ -30,7 +30,10 @@ if (isset($mensagem)) {
     </p>
     <p>
         <label>Quantidade:</label>
-        <input type="number" name="quantidade" required>
+        <input type="number" name="quantidade" required
+               min="1"
+               max="100"
+               title="Digite um valor entre 1 e 100">
     </p>
     <button type="submit">Registrar</button>
 </form>

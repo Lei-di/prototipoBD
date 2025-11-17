@@ -10,15 +10,21 @@ if (isset($mensagem)) {
 <form method="POST" action="index.php?action=registrarUsuario">
     <p>
         <label>Nome Completo:</label>
-        <input type="text" name="nome" required>
+        <input type="text" name="nome" required
+               pattern="[A-Za-zÀ-ú\s]+"
+               title="Digite apenas letras e espaços. Números não são permitidos.">
     </p>
     <p>
         <label>Login:</label>
-        <input type="text" name="login" required>
+        <input type="text" name="login" required
+               pattern="[A-Za-z0-9_.-]+"
+               title="Digite apenas letras (sem acentos), números, '_', '.' ou '-'. Sem espaços.">
     </p>
     <p>
         <label>Senha:</label>
-        <input type="password" name="senha" required>
+        <input type="password" name="senha" required
+               minlength="6"
+               title="A senha deve ter no mínimo 6 caracteres.">
     </p>
     
     <p>

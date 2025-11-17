@@ -13,11 +13,15 @@ if (isset($mensagem)) {
         <legend>Dados do Cliente</legend>
         <p>
             <label>CPF (apenas números):</label>
-            <input type="text" name="cpf" maxlength="11" required>
+            <input type="tel" name="cpf" maxlength="11" required
+                   pattern="[0-9]{11}" 
+                   title="Digite exatamente 11 números, sem pontos ou traços.">
         </p>
         <p>
             <label>Nome Completo:</label>
-            <input type="text" name="nome_cliente" size="50" required>
+            <input type="text" name="nome_cliente" size="50" required
+                   pattern="[A-Za-zÀ-ú\s]+"
+                   title="Digite apenas letras e espaços. Números não são permitidos.">
         </p>
         <p>
             <label>Email:</label>
@@ -25,7 +29,9 @@ if (isset($mensagem)) {
         </p>
         <p>
             <label>Telefone:</label>
-            <input type="text" name="telefone">
+            <input type="tel" name="telefone"
+                   pattern="[0-9]{10,15}"
+                   title="Digite apenas números (com DDD), entre 10 e 15 dígitos.">
         </p>
     </fieldset>
 
@@ -33,7 +39,7 @@ if (isset($mensagem)) {
         <legend>Dados do Contrato</legend>
         <p>
             <label>Descrição do Serviço:</label><br>
-            <textarea name="desc_servico" rows="4" cols="50"></textarea>
+            <textarea name="desc_servico" rows="4" cols="50" maxlength="500"></textarea>
         </p>
         <p>
             <label>Data de Início:</label>
