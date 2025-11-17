@@ -53,15 +53,35 @@ class Cliente {
     }
 
     /**
-     * NOVO MÉTODO: Busca todos os clientes no banco
+     * Busca todos os clientes e o status do seu último contrato
      * */
     public function listarClientes() {
-        // Assume que a tabela se chama 'Clientes'
-        // --- CORREÇÃO AQUI ---
-        // Removemos a coluna 'id' que não existe na sua tabela.
-        $sql = "SELECT cpf, nome_cliente, email, telefone 
-                FROM Clientes 
-                ORDER BY nome_cliente ASC";
+        
+        // --- CONSULTA ATUALIZADA ---
+        // Esta consulta agora junta Clientes com Contratos.
+        // Usamos ROW_NUMBER() para pegar apenas o contrato mais recente (rn = 1)
+        // de cada cliente (PARTITION BY C.cpf), ordenando pela data de início.
+        
+        $sql = "
+            SELECT 
+                C.cpf, 
+                C.nome_cliente, 
+                C.email, 
+                C.telefone,
+                K.data_inicio,
+                K.data_fim
+            FROM Clientes AS C
+            LEFT JOIN (
+                SELECT 
+                    cliente_cpf, -- Assumindo que esta é a chave estrangeira
+                    data_inicio,
+                    data_fim,
+                    ROW_NUMBER() OVER(PARTITION BY cliente_cpf ORDER BY data_inicio DESC) as rn
+                FROM Contratos
+            ) AS K ON C.cpf = K.cliente_cpf AND K.rn = 1
+            ORDER BY 
+                C.nome_cliente ASC;
+        ";
         
         $result = pg_query($this->db_conn, $sql);
 
