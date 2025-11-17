@@ -11,7 +11,7 @@ class Estoque {
     }
 
     /**
-     * Chama a função sp_RegistrarMovimentacaoEstoque [cite: 13-19]
+     * Chama a função sp_RegistrarMovimentacaoEstoque
      */
     public function registrarMovimentacao($item_id, $tipo, $quantidade, $usuario_id) {
         
@@ -51,13 +51,53 @@ class Estoque {
     }
 
     /**
-     * Chama a função sp_RelatorioEstoqueAbaixoMinimo [cite: 29-30]
+     * Chama a função sp_RelatorioEstoqueAbaixoMinimo
      */
     public function getRelatorioReposicao() {
         $sql = "SELECT * FROM sp_RelatorioEstoqueAbaixoMinimo()";
         $result = pg_query($this->db_conn, $sql);
         
         // Retorna todos os resultados como um array
+        return pg_fetch_all($result);
+    }
+
+    /**
+     * NOVO MÉTODO
+     * Busca o histórico de todas as movimentações
+     */
+    public function getHistoricoMovimentacoes() {
+        
+        // --- CORREÇÃO FINAL COM O NOME DA COLUNA DA IMAGEM ---
+        $sql = "
+            SELECT 
+                M.data_movimentacao,
+                I.nome_item,
+                
+                -- Usamos o nome 'tipo_movimentacao' da sua tabela
+                -- e damos a ele o apelido 'tipo' para a view
+                M.tipo_movimentacao AS tipo, 
+                
+                M.quantidade,
+                U.nome AS nome_usuario 
+            FROM 
+                movimentacoesestoque AS M
+            JOIN 
+                itensestoque AS I ON M.item_id = I.id
+            JOIN 
+                usuarios AS U ON M.usuario_id = U.id
+            ORDER BY 
+                M.data_movimentacao DESC
+            LIMIT 100; -- Limita aos 100 mais recentes
+        ";
+        // --- FIM DA CORREÇÃO ---
+        
+        $result = pg_query($this->db_conn, $sql);
+        
+        if (!$result) {
+            echo "Erro na consulta do histórico: " . pg_last_error($this->db_conn);
+            return [];
+        }
+
         return pg_fetch_all($result);
     }
 }

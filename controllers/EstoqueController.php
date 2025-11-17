@@ -90,5 +90,28 @@ class EstoqueController {
         require 'views/estoque_relatorio.php'; // A View usará a variável $itens
         require 'views/layouts/footer.php';
     }
+
+    /**
+     * NOVO MÉTODO
+     * Ação: index.php?action=historicoEstoque
+     * Mostra o log de todas as movimentações.
+     */
+    public function mostrarHistorico() {
+        // --- GUARDIÃO DE AUTORIZAÇÃO ---
+        $perfil = $_SESSION['perfil_id'];
+        // Perfil 5 (Atendente) NÃO PODE (Mesma regra do relatório)
+        if ($perfil == 5) {
+            die("Acesso negado. Você não tem permissão para ver o histórico de estoque.");
+        }
+        // --- FIM DO GUARDIÃO ---
+
+        // 1. Chama o Model
+        $movimentacoes = $this->estoqueModel->getHistoricoMovimentacoes();
+        
+        // 2. Carrega a View e passa os dados
+        require 'views/layouts/header.php';
+        require 'views/estoque_historico.php'; // A View usará a variável $movimentacoes
+        require 'views/layouts/footer.php';
+    }
 }
 ?>

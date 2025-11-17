@@ -28,6 +28,7 @@
             <?php // Perfil 5 (Atendente) NÃO PODE ver relatórios
             if ($perfil != 5): ?>
                 <a href="index.php?action=relatorioEstoque">Relatório de Reposição</a> | 
+                <a href="index.php?action=historicoEstoque">Histórico de Estoque</a> | 
             <?php endif; ?>
 
             <?php // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM movimentar
