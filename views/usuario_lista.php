@@ -25,15 +25,12 @@ $mapeamento_perfis = [
     </thead>
     <tbody>
         <?php
-        // Esta variável $usuarios é definida pelo Controller
         if ($usuarios && count($usuarios) > 0) {
             foreach ($usuarios as $usuario) {
                 
-                // Busca o nome do perfil no mapeamento
                 $perfil_id = $usuario['perfil_id'];
                 $nome_perfil = isset($mapeamento_perfis[$perfil_id]) ? $mapeamento_perfis[$perfil_id] : "ID $perfil_id (Desconhecido)";
-                
-                // Define o status
+            
                 $status_texto = ($usuario['ativo'] == 't') ? "Ativo" : "Inativo";
                 $status_cor = ($usuario['ativo'] == 't') ? "green" : "red";
 

@@ -1,7 +1,5 @@
 <?php
-// views/estoque_formulario.php
 
-// Esta variável $mensagem é definida pelo Controller
 if (isset($mensagem)) {
     echo "<p style='color:red;'>" . htmlspecialchars($mensagem) . "</p>";
 }

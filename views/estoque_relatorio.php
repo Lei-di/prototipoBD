@@ -11,7 +11,6 @@
     </thead>
     <tbody>
         <?php
-        // Esta variável $itens é definida pelo Controller
         if ($itens) {
             foreach ($itens as $item) {
                 echo "<tr>";

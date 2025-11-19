@@ -1,5 +1,4 @@
 <?php
-// models/Cliente.php
 
 class Cliente {
     
@@ -9,9 +8,7 @@ class Cliente {
         $this->db_conn = $db;
     }
 
-    /**
-     * Chama a função sp_CadastrarClienteContrato
-     * */
+
     public function cadastrarClienteContrato($cpf, $nome, $email, $telefone, $servico, $data_inicio, $data_fim) {
         
         $sql = "SELECT * FROM sp_CadastrarClienteContrato($1, $2, $3, $4, $5, $6, $7)";
@@ -23,7 +20,6 @@ class Cliente {
             return "Erro ao preparar query: " . pg_last_error($this->db_conn);
         }
 
-        // Executa a função
         $result = pg_execute($this->db_conn, $query_name, array(
             $cpf, 
             $nome, 
@@ -38,29 +34,18 @@ class Cliente {
             return "Erro ao executar função: " . pg_last_error($this->db_conn);
         }
 
-        // Pega o resultado da função (o ID do contrato ou 0 em caso de erro)
         $row = pg_fetch_assoc($result);
         $novo_contrato_id = $row['sp_cadastrarclientecontrato'];
 
         if ($novo_contrato_id > 0) {
-            return $novo_contrato_id; // Sucesso, retorna o ID do novo contrato
+            return $novo_contrato_id; 
         } else {
-            // Falha (função retornou 0). 
-            // A SP SQL envia um NOTICE de "CPF já cadastrado", 
-            // mas aqui apenas informamos o erro genérico.
             return "Erro: O CPF já pode estar cadastrado ou os dados são inválidos.";
         }
     }
 
-    /**
-     * Busca todos os clientes e o status do seu último contrato
-     * */
     public function listarClientes() {
         
-        // --- CONSULTA ATUALIZADA ---
-        // Esta consulta agora junta Clientes com Contratos.
-        // Usamos ROW_NUMBER() para pegar apenas o contrato mais recente (rn = 1)
-        // de cada cliente (PARTITION BY C.cpf), ordenando pela data de início.
         
         $sql = "
             SELECT 
@@ -90,7 +75,6 @@ class Cliente {
             return [];
         }
 
-        // Retorna todos os resultados como um array
         return pg_fetch_all($result);
     }
 }

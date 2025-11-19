@@ -1,40 +1,25 @@
 <?php
-// index.php (VERSÃO ATUALIZADA)
-session_start(); // DEVE SER A PRIMEIRA LINHA!
+session_start(); 
 
-// --- INÍCIO DO GUARDIÃO DE ACESSO ---
-// 1. Pega a ação que o usuário quer acessar
 $action = $_GET['action'] ?? 'home';
 
-// 2. Define quais ações são "públicas" (não precisam de login)
-// CORREÇÃO: Removemos o acesso público ao registro de usuário
-$acoes_publicas = ['loginForm', 'fazerLogin']; // <-- VOLTAR PARA ISTO
+$acoes_publicas = ['loginForm', 'fazerLogin']; 
 
-// 3. Verifica se o usuário NÃO está logado E se a ação NÃO é pública
 if (!isset($_SESSION['usuario_id']) && !in_array($action, $acoes_publicas)) {
-    // Se não estiver logado, força o redirecionamento para o formulário de login
     header("Location: index.php?action=loginForm");
     exit;
 }
 
 
-
-// 1. Inclui os arquivos necessários
 require_once 'config/db.php';
 require_once 'controllers/EstoqueController.php';
 require_once 'controllers/ClienteController.php';
 require_once 'controllers/UsuarioController.php';
 require_once 'controllers/OcorrenciaController.php';
 
-// 2. Decide qual rota/ação tomar
-// $action = $_GET['action'] ?? 'home'; // <-- LINHA ANTIGA FOI MOVIDA PARA CIMA
-
-// 3. Obtém a conexão com o banco
 $db_conn = getDbConnection();
 
-// 4. Direciona para o Controller correto
 switch ($action) {
-    // --- ROTAS DE LOGIN ---
     case 'loginForm':
         $controller = new UsuarioController($db_conn);
         $controller->mostrarFormularioLogin();
@@ -47,8 +32,6 @@ switch ($action) {
         $controller = new UsuarioController($db_conn);
         $controller->fazerLogout();
         break;
-
-    // Rotas de Estoque
     case 'movimentarEstoqueForm':
         $controller = new EstoqueController($db_conn);
         $controller->mostrarFormularioMovimentacao();
@@ -65,8 +48,6 @@ switch ($action) {
         $controller = new EstoqueController($db_conn);
         $controller->mostrarHistorico();
         break;
-    
-    // Rotas de Cliente
     case 'clienteForm':
         $controller = new ClienteController($db_conn);
         $controller->mostrarFormulario();
@@ -79,8 +60,6 @@ switch ($action) {
         $controller = new ClienteController($db_conn);
         $controller->listarClientes();
         break;
-
-    // Rotas de Usuário
     case 'usuarioForm':
         $controller = new UsuarioController($db_conn);
         $controller->mostrarFormulario();
@@ -89,15 +68,10 @@ switch ($action) {
         $controller = new UsuarioController($db_conn);
         $controller->registrarUsuario();
         break;
-    
-    // --- ROTA ADICIONADA ---
     case 'listarUsuarios':
         $controller = new UsuarioController($db_conn);
         $controller->listarUsuarios();
         break;
-    // --- FIM DA ADIÇÃO ---
-
-    // Rotas de Ocorrência
     case 'ocorrenciaForm':
         $controller = new OcorrenciaController($db_conn);
         $controller->mostrarFormulario();
@@ -107,20 +81,15 @@ switch ($action) {
         $controller->registrarOcorrencia();
         break;
 
-    // Rota Padrão (Home)
     default:
-        // Carrega o header
         require 'views/layouts/header.php';
         
-        // Conteúdo da Home
         echo "<h1>Bem-vindo ao Sistema</h1>";
         echo "<p>Selecione uma opção no menu acima para começar.</p>";
 
-        // Carrega o footer
         require 'views/layouts/footer.php';
         break;
 }
 
-// Fecha a conexão no final
 pg_close($db_conn);
 ?>

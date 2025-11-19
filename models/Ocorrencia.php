@@ -1,5 +1,4 @@
 <?php
-// models/Ocorrencia.php
 
 class Ocorrencia {
     
@@ -9,13 +8,8 @@ class Ocorrencia {
         $this->db_conn = $db;
     }
 
-    /**
-     * Chama a função sp_RegistrarOcorrencia
-     * 
-     */
     public function registrarOcorrencia($operador_id, $descricao, $camera_id) {
         
-        // Trata o ID da câmera se estiver vazio
         if (empty($camera_id)) {
             $camera_id = null;
         }
@@ -40,7 +34,7 @@ class Ocorrencia {
         }
 
         $row = pg_fetch_assoc($result);
-        return $row['sp_registrarocorrencia']; // Retorna o novo ID [cite: 28]
+        return $row['sp_registrarocorrencia']; 
     }
 }
 ?>

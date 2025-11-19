@@ -4,9 +4,9 @@
 function getDbConnection() {
     $host = 'localhost';
     $port = '5432';
-    $dbname = 'bd_seguranca'; // O nome do seu banco
-    $user = 'postgres';       // Seu usuário do pgAdmin
-    $pass = '1234';   // Sua senha
+    $dbname = 'bd_seguranca'; 
+    $user = 'postgres';       
+    $pass = '1234';   
 
     $conn_string = "host=localhost port=5432 dbname=bd_seguranca user=postgres password=1234";
     

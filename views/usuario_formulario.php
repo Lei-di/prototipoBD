@@ -1,5 +1,4 @@
 <?php
-// views/usuario_formulario.php
 
 if (isset($mensagem)) {
     echo "<p style='color:red;'>" . htmlspecialchars($mensagem) . "</p>";

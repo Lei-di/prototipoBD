@@ -3,13 +3,13 @@
     
     <style>
         footer {
-            display: flex; /* Usa flexbox para alinhar */
-            justify-content: space-between; /* Itens ficam um em cada ponta */
-            align-items: center; /* Alinha verticalmente */
-            padding: 0 10px; /* Adiciona um padding leve */
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 10px; 
         }
         footer a {
-            color: #007bff; /* Cor azul para o link 'Sair' */
+            color: #007bff; 
             text-decoration: none;
         }
         footer a:hover {

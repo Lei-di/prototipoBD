@@ -1,6 +1,4 @@
 <?php
-// controllers/EstoqueController.php
-
 require_once 'models/Estoque.php';
 
 class EstoqueController {
@@ -13,104 +11,70 @@ class EstoqueController {
         $this->estoqueModel = new Estoque($this->db_conn);
     }
 
-    // Ação: index.php?action=movimentarEstoqueForm
     public function mostrarFormularioMovimentacao() {
-        // --- GUARDIÃO DE AUTORIZAÇÃO ---
         $perfil = $_SESSION['perfil_id'];
-        // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM
         if ($perfil == 3 || $perfil == 5) {
             die("Acesso negado. Você não tem permissão para movimentar o estoque.");
         }
-        // --- FIM DO GUARDIÃO ---
-        
-        // Simplesmente carrega a View do formulário
+
         require 'views/layouts/header.php';
         require 'views/estoque_formulario.php';
         require 'views/layouts/footer.php';
     }
 
-    // Ação: index.php?action=registrarMovimentacao (quando o formulário é enviado)
     public function registrarMovimentacao() {
-        // --- GUARDIÃO DE AUTORIZAÇÃO ---
         $perfil = $_SESSION['perfil_id'];
-        // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM
         if ($perfil == 3 || $perfil == 5) {
             die("Acesso negado. Você não tem permissão para registrar movimentações de estoque.");
         }
-        // --- FIM DO GUARDIÃO ---
 
-        $mensagem = ""; // Mensagem de sucesso ou erro
+        $mensagem = ""; 
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // 1. Pega dados do formulário
             $item_id = $_POST['item_id'];
             $tipo = $_POST['tipo'];
             $quantidade = $_POST['quantidade'];
-            // $usuario_id = 1; // Temporário, até você ter o login real (LINHA ANTIGA)
-            $usuario_id = $_SESSION['usuario_id']; // Pega o ID do usuário logado!
+            $usuario_id = $_SESSION['usuario_id']; 
 
-            // 2. Validação simples
             if (empty($item_id) || empty($tipo) || empty($quantidade)) {
                 $mensagem = "Erro: Todos os campos são obrigatórios.";
             } else {
-                // 3. Chama o Model
                 $resultado = $this->estoqueModel->registrarMovimentacao($item_id, $tipo, $quantidade, $usuario_id);
 
                 if ($resultado === true) {
                     $mensagem = "Movimentação registrada com sucesso!";
                 } else {
-                    // $resultado conterá a mensagem de erro do banco
                     $mensagem = $resultado; 
                 }
             }
         }
         
-        // 4. Recarrega a View do formulário com a mensagem
         require 'views/layouts/header.php';
-        // Passa a variável $mensagem para a View
         require 'views/estoque_formulario.php'; 
         require 'views/layouts/footer.php';
     }
 
-    // Ação: index.php?action=relatorioEstoque
     public function gerarRelatorio() {
-        // --- GUARDIÃO DE AUTORIZAÇÃO ---
         $perfil = $_SESSION['perfil_id'];
-        // Perfil 5 (Atendente) NÃO PODE
         if ($perfil == 5) {
             die("Acesso negado. Você não tem permissão para ver relatórios de estoque.");
         }
-        // --- FIM DO GUARDIÃO ---
-
-        // 1. Chama o Model
         $itens = $this->estoqueModel->getRelatorioReposicao();
         
-        // 2. Carrega a View e passa os dados
         require 'views/layouts/header.php';
-        require 'views/estoque_relatorio.php'; // A View usará a variável $itens
+        require 'views/estoque_relatorio.php'; 
         require 'views/layouts/footer.php';
     }
 
-    /**
-     * NOVO MÉTODO
-     * Ação: index.php?action=historicoEstoque
-     * Mostra o log de todas as movimentações.
-     */
     public function mostrarHistorico() {
-        // --- GUARDIÃO DE AUTORIZAÇÃO ---
         $perfil = $_SESSION['perfil_id'];
-        // Perfil 5 (Atendente) NÃO PODE (Mesma regra do relatório)
         if ($perfil == 5) {
             die("Acesso negado. Você não tem permissão para ver o histórico de estoque.");
         }
-        // --- FIM DO GUARDIÃO ---
-
-        // 1. Chama o Model
         $movimentacoes = $this->estoqueModel->getHistoricoMovimentacoes();
         
-        // 2. Carrega a View e passa os dados
         require 'views/layouts/header.php';
-        require 'views/estoque_historico.php'; // A View usará a variável $movimentacoes
+        require 'views/estoque_historico.php'; 
         require 'views/layouts/footer.php';
     }
 }

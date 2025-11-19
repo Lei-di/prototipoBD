@@ -16,13 +16,10 @@
     </thead>
     <tbody>
         <?php
-        // Esta variável $movimentacoes é definida pelo Controller
         if ($movimentacoes && count($movimentacoes) > 0) {
             foreach ($movimentacoes as $mov) {
-                // Formata a data para um formato mais legível
                 $data_formatada = date('d/m/Y H:i:s', strtotime($mov['data_movimentacao']));
                 
-                // Colore a célula de Tipo
                 $cor_tipo = ($mov['tipo'] == 'ENTRADA') ? 'green' : 'red';
 
                 echo "<tr>";

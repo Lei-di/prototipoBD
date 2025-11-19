@@ -12,14 +12,12 @@
         text-align: center;
         min-width: 80px;
         
-        /* --- MUDANÇAS AQUI --- */
-        text-decoration: none; /* Garante que NÃO haja sublinhado */
-        cursor: default;     /* Cursor padrão */
+        text-decoration: none; 
     }
-    .status-ativo { background-color: #28a745; } /* Verde */
-    .status-a-vencer { background-color: #ffc107; color: #333; } /* Laranja */
-    .status-encerrado { background-color: #dc3545; } /* Vermelho */
-    .status-nenhum { background-color: #6c757d; } /* Cinza */
+    .status-ativo { background-color: #28a745; } 
+    .status-a-vencer { background-color: #ffc107; color: #333; } 
+    .status-encerrado { background-color: #dc3545; } 
+    .status-nenhum { background-color: #6c757d; } 
 </style>
 
 <h2>Clientes Cadastrados</h2>
@@ -36,7 +34,6 @@
     </thead>
     <tbody>
         <?php
-        // Esta variável $clientes é definida pelo Controller
         if ($clientes && count($clientes) > 0) {
             
             $hoje = new DateTime();
@@ -47,11 +44,8 @@
                 $status_classe = 'status-nenhum';
                 $status_texto = 'Sem Contrato';
                 
-                // --- MUDANÇA AQUI ---
-                // Esta variável guardará o HTML das datas
                 $datas_html = '';
 
-                // Verifica se há um contrato (data_inicio não é nula)
                 if (!empty($cliente['data_inicio'])) {
                     
                     $data_inicio = new DateTime($cliente['data_inicio']);
@@ -60,15 +54,11 @@
                     $data_inicio_fmt = $data_inicio->format('d/m/Y');
                     $data_fim_fmt = $data_fim->format('d/m/Y');
                     
-                    // --- MUDANÇA AQUI ---
-                    // Monta o HTML das datas para exibir abaixo do status
-                    // Usamos <br> para quebrar a linha e <small> para fonte menor
                     $datas_html = "<br><small style='font-size: 0.9em; color: #333;'>
                                      Início: $data_inicio_fmt<br>
                                      Fim: $data_fim_fmt
                                    </small>";
 
-                    // Verifica o status
                     if ($hoje > $data_fim) {
                         $status_classe = 'status-encerrado';
                         $status_texto = 'Encerrado';
@@ -87,20 +77,16 @@
                 echo "<td style='padding: 8px;'>" . htmlspecialchars($cliente['email']) . "</td>";
                 echo "<td style='padding: 8px;'>" . htmlspecialchars($cliente['telefone']) . "</td>";
                 
-                // --- MUDANÇA PRINCIPAL (SEM JAVASCRIPT E SEM TITLE) ---
                 echo "<td style='padding: 8px; text-align: center; line-height: 1.5;'>";
                 
-                // 1. Exibe o status (agora sem 'title')
                 echo "<span class='status-badge $status_classe'>$status_texto</span>";
-                
-                // 2. Exibe o HTML das datas logo abaixo (só aparece se houver contrato)
+      
                 echo $datas_html;
                 
                 echo "</td>";
                 echo "</tr>";
             }
         } else {
-            // Ajustamos o colspan para 5 colunas
             echo "<tr><td colspan='5' style='padding: 8px; text-align: center;'>Nenhum cliente cadastrado.</td></tr>";
         }
         ?>

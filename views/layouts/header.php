@@ -1,5 +1,4 @@
 <?php
-// views/layouts/header.php
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -7,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Protótipo Sistema de Segurança</title>
     <style>
-        /* CSS Básico para organizar */
+   
         body { font-family: sans-serif; margin: 0; }
         
         nav { 
@@ -26,37 +25,36 @@
 <body>
 
     <?php if (isset($_SESSION['usuario_id'])): 
-        // Armazena o perfil_id para facilitar a leitura
         $perfil = $_SESSION['perfil_id'];
     ?>
         <nav>
             <div>
                 <a href="index.php?action=home">Início</a> | 
                 
-                <?php // Perfil 5 (Atendente) NÃO PODE ver relatórios
+                <?php 
                 if ($perfil != 5): ?>
                     <a href="index.php?action=relatorioEstoque">Relatório de Reposição</a> | 
                     <a href="index.php?action=historicoEstoque">Histórico de Estoque</a> | 
                 <?php endif; ?>
 
-                <?php // Perfil 3 (Operador) e 5 (Atendente) NÃO PODEM movimentar
+                <?php 
                 if ($perfil != 3 && $perfil != 5): ?>
                     <a href="index.php?action=movimentarEstoqueForm">Movimentar Estoque</a> |
                 <?php endif; ?>
 
-                <?php // Perfil 3 (Operador) e 4 (Controlador) NÃO PODEM
+                <?php 
                 if ($perfil != 3 && $perfil != 4): ?>
                     <a href="index.php?action=clienteForm">Cadastrar Cliente</a> |
                     <a href="index.php?action=listarClientes">Visualizar Clientes</a> |
                 <?php endif; ?>
 
-                <?php // Apenas Perfil 1 (Admin) PODE
+                <?php 
                 if ($perfil == 1): ?>
                     <a href="index.php?action=usuarioForm">Cadastrar Usuário</a> |
                     <a href="index.php?action=listarUsuarios">Visualizar Usuários</a> |
                 <?php endif; ?>
 
-                <?php // Perfil 4 (Controlador) NÃO PODE registrar ocorrência
+                <?php 
                 if ($perfil != 4): ?>
                     <a href="index.php?action=ocorrenciaForm">Registrar Ocorrência</a>
                 <?php endif; ?>

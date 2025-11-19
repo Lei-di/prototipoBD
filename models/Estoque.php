@@ -1,33 +1,24 @@
 <?php
-// models/Estoque.php
 
 class Estoque {
     
     private $db_conn;
 
-    // Recebe a conexão do Controller
     public function __construct($db) {
         $this->db_conn = $db;
     }
 
-    /**
-     * Chama a função sp_RegistrarMovimentacaoEstoque
-     */
+
     public function registrarMovimentacao($item_id, $tipo, $quantidade, $usuario_id) {
-        
-        // 1. Prepara a chamada da função
+     
         $sql = "SELECT * FROM sp_RegistrarMovimentacaoEstoque($1, $2, $3, $4)";
-        
-        // 2. Prepara a query com um nome único (para evitar conflitos)
+
         $query_name = "mov_estoque_" . uniqid();
         $result_prepare = pg_prepare($this->db_conn, $query_name, $sql);
         
         if (!$result_prepare) {
-            // Retorna a mensagem de erro do PostgreSQL
             return "Erro ao preparar: " . pg_last_error($this->db_conn);
         }
-
-        // 3. Executa a função
         $result = pg_execute($this->db_conn, $query_name, array(
             $item_id, 
             $tipo, 
@@ -36,38 +27,27 @@ class Estoque {
         ));
 
         if (!$result) {
-            // Pega a EXCEPTION que você definiu no SQL!
-            // Ex: "Estoque insuficiente. Quantidade atual: 5"
             return "Erro ao executar: " . pg_last_error($this->db_conn);
         }
 
-        // 4. Pega o resultado (TRUE ou FALSE)
         $row = pg_fetch_assoc($result);
-        if ($row['sp_registrarmovimentacaoestoque'] == 't') { // 't' é true no PostgreSQL
+        if ($row['sp_registrarmovimentacaoestoque'] == 't') { 
             return true;
         } else {
             return "A função retornou falso.";
         }
     }
 
-    /**
-     * Chama a função sp_RelatorioEstoqueAbaixoMinimo
-     */
     public function getRelatorioReposicao() {
         $sql = "SELECT * FROM sp_RelatorioEstoqueAbaixoMinimo()";
         $result = pg_query($this->db_conn, $sql);
         
-        // Retorna todos os resultados como um array
         return pg_fetch_all($result);
     }
 
-    /**
-     * NOVO MÉTODO
-     * Busca o histórico de todas as movimentações
-     */
+
     public function getHistoricoMovimentacoes() {
         
-        // --- CORREÇÃO FINAL COM O NOME DA COLUNA DA IMAGEM ---
         $sql = "
             SELECT 
                 M.data_movimentacao,
@@ -89,7 +69,6 @@ class Estoque {
                 M.data_movimentacao DESC
             LIMIT 100; -- Limita aos 100 mais recentes
         ";
-        // --- FIM DA CORREÇÃO ---
         
         $result = pg_query($this->db_conn, $sql);
         
